@@ -38,12 +38,9 @@ def generate_store_demand_data(
     pd.DataFrame
         Generated dataset
     """
-    
     print("=" * 60)
     print("  GENERATING STORE DEMAND DATASET")
     print("=" * 60)
-    
-    # Store configurations
     store_cities = [
         'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata',
         'Hyderabad', 'Pune', 'Ahmedabad', 'Jaipur', 'Lucknow',
@@ -58,65 +55,43 @@ def generate_store_demand_data(
         'Kolkata': 'East',
         'Bhopal': 'Central', 'Indore': 'Central', 'Nagpur': 'Central'
     }
-    
-    # Product categories
     categories = [
         'Electronics', 'Clothing', 'Food & Beverages', 
         'Home & Kitchen', 'Beauty & Personal Care'
     ]
-    
-    # Weather conditions
     weather_conditions = ['Sunny', 'Rainy', 'Cloudy', 'Hot', 'Cold']
-    
-    # Generate date range
     start = datetime.strptime(start_date, '%Y-%m-%d')
     end = datetime.strptime(end_date, '%Y-%m-%d')
     dates = pd.date_range(start=start, end=end, freq='D')
-    
     print(f"\n  📅 Date range: {start_date} to {end_date}")
     print(f"  🏪 Stores: {num_stores}")
     print(f"  📦 Products: {num_items}")
     print(f"  📊 Expected records: {len(dates) * num_stores * num_items:,}")
-    
-    # Generate item-category mapping and prices
     np.random.seed(42)
     item_categories = {i: categories[(i-1) % len(categories)] for i in range(1, num_items + 1)}
     item_prices = {i: round(np.random.uniform(23, 4515), 2) for i in range(1, num_items + 1)}
-    
     print("\n  ⏳ Generating data... (this may take a few minutes)")
-    
-    # Generate all combinations
     records = []
     total_combinations = len(dates) * num_stores * num_items
     progress_step = total_combinations // 10
     
     idx = 0
     for date in dates:
-        # Seasonal and day-of-week factors
         month = date.month
         day_of_week = date.weekday()
         is_weekend = 1 if day_of_week >= 5 else 0
-        
-        # Seasonal multiplier (higher sales in festive months)
         seasonal_mult = 1.0
-        if month in [10, 11, 12]:  # Festive season
+        if month in [10, 11, 12]: 
             seasonal_mult = 1.3
-        elif month in [1, 2]:  # Post-holiday dip
+        elif month in [1, 2]:  
             seasonal_mult = 0.85
-        elif month in [6, 7, 8]:  # Monsoon
+        elif month in [6, 7, 8]:  
             seasonal_mult = 0.9
-            
-        # Weekend multiplier
         weekend_mult = 1.15 if is_weekend else 1.0
-        
         for store in range(1, num_stores + 1):
             city = store_cities[store - 1]
             region = store_regions[city]
-            
-            # Store performance factor (some stores perform better)
             store_factor = 0.8 + (store / num_stores) * 0.4
-            
-            # Weather for this store on this day
             weather = random.choice(weather_conditions)
             weather_mult = 1.0
             if weather == 'Rainy':
@@ -180,10 +155,9 @@ def generate_store_demand_data(
 
 
 def main():
-    # Generate the dataset
+
     df = generate_store_demand_data()
     
-    # Save to CSV
     output_file = 'StoreDemand.csv'
     print(f"\n  💾 Saving to {output_file}...")
     df.to_csv(output_file, index=False)

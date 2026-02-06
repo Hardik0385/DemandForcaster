@@ -68,7 +68,6 @@ print(df.describe().round(2).to_string())
 
 print_header("STEP 2: FEATURE ENGINEERING")
 
-# Extract year, month, day from date
 parts = df["date"].str.split("-", n=3, expand=True)
 df["year"] = parts[0].astype('int')
 df["month"] = parts[1].astype('int')
@@ -77,7 +76,6 @@ df["day"] = parts[2].astype('int')
 print_subheader("Date Components Extracted")
 print("  ✓ Year, Month, and Day columns created from 'date'")
 
-# Add weekend indicator
 def weekend_or_weekday(year, month, day):
     d = datetime(year, month, day)
     return 1 if d.weekday() > 4 else 0
@@ -85,24 +83,20 @@ def weekend_or_weekday(year, month, day):
 df['weekend'] = df.apply(lambda x: weekend_or_weekday(x['year'], x['month'], x['day']), axis=1)
 print("  ✓ Weekend indicator added (1 = Weekend, 0 = Weekday)")
 
-# Add holiday indicator (Indian holidays)
 india_holidays = holidays.country_holidays('IN')
 df['holidays'] = df['date'].apply(lambda x: 1 if india_holidays.get(x) else 0)
 print("  ✓ Holiday indicator added (Indian public holidays)")
 
-# Add cyclical features for month
 df['m1'] = np.sin(df['month'] * (2 * np.pi / 12))
 df['m2'] = np.cos(df['month'] * (2 * np.pi / 12))
 print("  ✓ Cyclical month features added (sin/cos encoding)")
 
-# Add weekday column
 def which_day(year, month, day):
     return datetime(year, month, day).weekday()
 
 df['weekday'] = df.apply(lambda x: which_day(x['year'], x['month'], x['day']), axis=1)
 print("  ✓ Weekday column added (0=Mon, 1=Tue, ..., 6=Sun)")
 
-# Drop the date column as it's no longer needed
 df.drop('date', axis=1, inplace=True)
 print("  ✓ Original 'date' column dropped")
 
@@ -124,10 +118,8 @@ if 'store_city' in df.columns:
 if 'category' in df.columns:
     print(f"  • Categories       : {df['category'].nunique()}")
 
-# Update weekend column
 df['weekend'] = df['weekday'].apply(lambda x: 1 if x >= 5 else 0)
 
-# Plot mean sales by various features
 print("\n  📊 Generating visualizations...")
 features_to_plot = ['store', 'year', 'month', 'weekday', 'weekend', 'holidays']
 plt.subplots(figsize=(20, 10))
@@ -142,7 +134,6 @@ plt.savefig('feature_analysis.png', dpi=150)
 plt.show()
 print("  ✓ Saved: feature_analysis.png")
 
-# Plot sales variation by day
 plt.figure(figsize=(10, 5))
 df.groupby('day')['sales'].mean().plot(color='coral', linewidth=2, marker='o', markersize=4)
 plt.title('Average Sales by Day of Month', fontsize=14, fontweight='bold')
@@ -153,10 +144,9 @@ plt.savefig('sales_by_day.png', dpi=150)
 plt.show()
 print("  ✓ Saved: sales_by_day.png")
 
-# Simple Moving Average (30-day window)
 plt.figure(figsize=(15, 10))
 window_size = 30
-data = df[df['year'] == 2021]  # Changed from 2013 to 2021 to match actual data
+data = df[df['year'] == 2021]
 if len(data) > 0:
     windows = data['sales'].rolling(window_size)
     sma = windows.mean()
@@ -172,7 +162,6 @@ if len(data) > 0:
     plt.show()
     print("  ✓ Saved: sma_analysis.png")
 
-# Distribution and outlier detection
 plt.subplots(figsize=(12, 5))
 plt.subplot(1, 2, 1)
 sb.histplot(df['sales'], kde=True, color='steelblue')
@@ -187,7 +176,6 @@ plt.savefig('sales_distribution.png', dpi=150)
 plt.show()
 print("  ✓ Saved: sales_distribution.png")
 
-# Correlation heatmap
 plt.figure(figsize=(10, 10))
 sb.heatmap(df.corr(numeric_only=True) > 0.8, annot=True, cbar=False, cmap='RdYlGn')
 plt.title('Feature Correlation Matrix (>0.8 = Highly Correlated)', fontsize=14, fontweight='bold')
@@ -195,7 +183,6 @@ plt.savefig('correlation_heatmap.png', dpi=150)
 plt.show()
 print("  ✓ Saved: correlation_heatmap.png")
 
-# Remove outliers
 original_count = len(df)
 df = df[df['sales'] < 140]
 removed_count = original_count - len(df)
@@ -210,7 +197,6 @@ print(f"  • Records remaining : {len(df):,}")
 
 print_header("STEP 4: MODEL TRAINING")
 
-# Encode categorical columns
 print_subheader("Encoding Categorical Features")
 categorical_cols = ['store_city', 'store_region', 'category', 'weather']
 label_encoders = {}
@@ -221,7 +207,6 @@ for col in categorical_cols:
         label_encoders[col] = le
         print(f"  ✓ '{col}' → Encoded to numerical values")
 
-# Prepare features and target
 features = df.drop(['sales', 'year'], axis=1)
 target = df['sales'].values
 X_train, X_val, Y_train, Y_val = train_test_split(features, target, test_size=0.05, random_state=22)
@@ -231,7 +216,6 @@ print(f"  • Training samples   : {X_train.shape[0]:,} ({95}%)")
 print(f"  • Validation samples : {X_val.shape[0]:,} ({5}%)")
 print(f"  • Number of features : {X_train.shape[1]}")
 
-# Normalize features
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_val = scaler.transform(X_val)
@@ -243,7 +227,6 @@ print("\n  ✓ Features normalized using StandardScaler")
 
 print_header("STEP 5: MODEL EVALUATION")
 
-# Train and evaluate multiple models
 models = {
     'Linear Regression': LinearRegression(),
     'XGBoost Regressor': XGBRegressor(),
@@ -276,7 +259,6 @@ for name, model in models.items():
         best_val_mae = val_mae
         best_model = name
 
-# Display results in a table
 print("\n" + "-" * 60)
 print(f"{'Model':<22} {'Training MAE':<18} {'Validation MAE':<18}")
 print("-" * 60)
