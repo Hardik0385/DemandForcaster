@@ -35,6 +35,23 @@ The dataset (`StoreDemand.csv`) contains:
 - 📅 **5+ years** of sales data (2021-2026)
 - 📈 **2+ million records**
 
+### 🔧 Generate Your Own Dataset
+
+Since the dataset is too large for GitHub, you can generate it yourself using the provided script:
+
+```bash
+python generate_data.py
+```
+
+This will create a `StoreDemand.csv` file with:
+- Realistic sales patterns with seasonal variations
+- Festive season spikes (October-December)
+- Weekend vs weekday differences
+- Weather impact on sales
+- Promotional effects
+
+> **Note**: Generation takes a few minutes due to the large dataset size (~2M records).
+
 ## ✨ Features
 
 ### 1. Feature Engineering
@@ -62,8 +79,8 @@ The dataset (`StoreDemand.csv`) contains:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/DemandForecaster.git
-   cd DemandForecaster
+   git clone https://github.com/Hardik0385/DemandForcaster.git
+   cd DemandForcaster
    ```
 
 2. **Create virtual environment**
@@ -78,8 +95,10 @@ The dataset (`StoreDemand.csv`) contains:
    pip install -r requirements.txt
    ```
 
-4. **Add the dataset**
-   - Place `StoreDemand.csv` in the project root directory
+4. **Generate the dataset**
+   ```bash
+   python generate_data.py
+   ```
 
 ## 💻 Usage
 
@@ -114,6 +133,18 @@ The script will:
 | `sma_analysis.png` | 30-day Simple Moving Average |
 | `sales_distribution.png` | Sales distribution & outlier detection |
 | `correlation_heatmap.png` | Feature correlation matrix |
+
+## 📁 Project Structure
+
+```
+DemandForecaster/
+├── demand_forecasting.py   # Main ML training script
+├── generate_data.py        # Dataset generator script
+├── requirements.txt        # Python dependencies
+├── README.md              # Project documentation
+├── LICENSE                # MIT License
+└── .gitignore             # Git ignore rules
+```
 
 ## 📋 Requirements
 
