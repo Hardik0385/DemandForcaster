@@ -100,18 +100,33 @@ This will create a `StoreDemand.csv` file with:
    python generate_data.py
    ```
 
-## 💻 Usage
+## 💻 Usage & Workflow
 
+### 1. Data Generation (Optional)
+If you need to generate a new dataset (e.g., to test with different parameters):
+```bash
+python generate_data.py
+```
+This will create `StoreDemand.csv`.
+
+### 2. Model Training
+Train the model and generate artifacts:
 ```bash
 python demand_forecasting.py
 ```
-
 The script will:
 1. Load and analyze the dataset
 2. Perform feature engineering
 3. Generate visualizations (saved as PNG files)
-4. Train multiple ML models
-5. Display model comparison results
+4. Train multiple ML models (Linear, XGBoost, etc.)
+5. Save the best model and metadata to `model_artifacts.joblib`
+
+### 3. Running the App
+Launch the Streamlit frontend to generate forecasts:
+```bash
+streamlit run app.py
+```
+The app will automatically load the trained model and adapt to the metadata (stores/items) from your dataset.
 
 ## 📈 Results
 
@@ -138,6 +153,7 @@ The script will:
 
 ```
 DemandForecaster/
+├── app.py                  # Streamlit frontend application
 ├── demand_forecasting.py   # Main ML training script
 ├── generate_data.py        # Dataset generator script
 ├── requirements.txt        # Python dependencies
@@ -156,6 +172,8 @@ seaborn
 scikit-learn
 xgboost
 holidays
+streamlit
+joblib
 ```
 
 ## 📄 License
@@ -165,35 +183,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Based on concepts from [GeeksforGeeks - Inventory Demand Forecasting](https://www.geeksforgeeks.org/machine-learning/inventory-demand-forecasting-using-machine-learning-python/)
-
-## 💻 Extended Usage
-
-### 1. Environment Setup
-Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Data Generation (Optional)
-If you need to generate a new dataset (e.g., to test with different parameters):
-```bash
-python generate_data.py
-```
-This will create `StoreDemand.csv`.
-
-### 3. Model Training
-Train the model and generate artifacts:
-```bash
-python demand_forecasting.py
-```
-This will create `model_artifacts.joblib` and various analysis plots.
-
-### 4. Running the App
-Launch the Streamlit frontend:
-```bash
-streamlit run app.py
-```
-The app will automatically load the latest model and metadata.
 
 ---
 
