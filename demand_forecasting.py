@@ -271,23 +271,37 @@ print("-" * 60)
 #                       FINAL SUMMARY
 # ============================================================
 
-print_header("SUMMARY & CONCLUSIONS")
 
+import joblib
+
+# ... (existing imports)
+
+# ... (existing code)
+
+print_subheader("Saving Model Artifacts")
+if best_model:
+    artifacts = {
+        'model': models[best_model],
+        'scaler': scaler,
+        'encoders': label_encoders,
+        'features': list(features.columns)
+    }
+    joblib.dump(artifacts, 'model_artifacts.joblib')
+    print(f"  ✓ Model artifacts saved to 'model_artifacts.joblib'")
+else:
+    print("  ⚠ No best model found to save.")
+
+print("\n" + "=" * 60)
 print(f"""
   🏆 BEST PERFORMING MODEL: {best_model}
      • Validation MAE: {best_val_mae:.4f}
   
-  📈 KEY INSIGHTS:
-     • XGBoost captures complex non-linear patterns effectively
-     • Linear models (Linear, Lasso, Ridge) show similar performance
-     • Feature engineering (cyclical, weekday, holiday) improved predictions
-  
-  📁 GENERATED VISUALIZATIONS:
-     • feature_analysis.png   - Sales breakdown by features
-     • sales_by_day.png       - Daily sales trend
-     • sma_analysis.png       - Moving average analysis
-     • sales_distribution.png - Distribution & outliers
-     • correlation_heatmap.png - Feature correlations
+  GRAPHICS GENERATED:
+     • feature_analysis.png
+     • sales_by_day.png
+     • sma_analysis.png
+     • sales_distribution.png
+     • correlation_heatmap.png
 
   ✅ Model training completed successfully!
 """)
