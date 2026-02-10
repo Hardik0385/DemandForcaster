@@ -287,7 +287,11 @@ if best_model:
         'model': models[best_model],
         'scaler': scaler,
         'encoders': label_encoders,
-        'features': list(features.columns)
+        'features': list(features.columns),
+        'metadata': {
+            'stores': sorted(df['store'].unique().tolist()),
+            'items': sorted(df['item'].unique().tolist())
+        }
     }
     joblib.dump(artifacts, 'model_artifacts.joblib')
     print(f"  ✓ Model artifacts saved to 'model_artifacts.joblib'")

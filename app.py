@@ -57,11 +57,16 @@ if artifacts:
     feature_names = artifacts['features']
 
 # ============================================================
-#                       Global Constants (Based on Training Data)
+#                       Global Constants (Dynamic Loading)
 # ============================================================
-# These should ideally be saved in artifacts, but hardcoding for now based on typical dataset values
-STORES = list(range(1, 16))  # 1 to 15
-ITEMS = list(range(1, 76))   # 1 to 75
+if artifacts and 'metadata' in artifacts:
+    STORES = artifacts['metadata'].get('stores', list(range(1, 16)))
+    ITEMS = artifacts['metadata'].get('items', list(range(1, 76)))
+else:
+    # Fallback defaults if metadata key is missing (e.g. old artifact)
+    STORES = list(range(1, 16))
+    ITEMS = list(range(1, 76))
+
 CITIES = encoders['store_city'].classes_ if artifacts else []
 REGIONS = encoders['store_region'].classes_ if artifacts else []
 CATEGORIES = encoders['category'].classes_ if artifacts else []

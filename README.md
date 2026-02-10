@@ -166,6 +166,35 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Based on concepts from [GeeksforGeeks - Inventory Demand Forecasting](https://www.geeksforgeeks.org/machine-learning/inventory-demand-forecasting-using-machine-learning-python/)
 
+## 💻 Extended Usage
+
+### 1. Environment Setup
+Install the required dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Data Generation (Optional)
+If you need to generate a new dataset (e.g., to test with different parameters):
+```bash
+python generate_data.py
+```
+This will create `StoreDemand.csv`.
+
+### 3. Model Training
+Train the model and generate artifacts:
+```bash
+python demand_forecasting.py
+```
+This will create `model_artifacts.joblib` and various analysis plots.
+
+### 4. Running the App
+Launch the Streamlit frontend:
+```bash
+streamlit run app.py
+```
+The app will automatically load the latest model and metadata.
+
 ---
 
 <p align="center">Made with ❤️ by Hardik Agrawal</p>
