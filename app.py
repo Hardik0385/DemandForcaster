@@ -201,16 +201,37 @@ if artifacts:
         st.header("📊 Model Analysis & Insights")
         tab1, tab2, tab3 = st.tabs(["Feature Analysis", "Sales Trends", "Correlations"])
         
+        import os
+
+        # ... (inside columns)
+
         with tab1:
-            st.image('feature_analysis.png', caption="Sales by Feature", use_column_width=True)
-            st.image('sales_distribution.png', caption="Sales Distribution", use_column_width=True)
+            if os.path.exists('feature_analysis.png'):
+                st.image('feature_analysis.png', caption="Sales by Feature")
+            else:
+                st.info("Feature Analysis chart not available.")
+                
+            if os.path.exists('sales_distribution.png'):
+                st.image('sales_distribution.png', caption="Sales Distribution")
+            else:
+                st.info("Sales Distribution chart not available.")
             
         with tab2:
-            st.image('sales_by_day.png', caption="Daily Sales Trend", use_column_width=True)
-            st.image('sma_analysis.png', caption="Moving Averages", use_column_width=True)
+            if os.path.exists('sales_by_day.png'):
+                st.image('sales_by_day.png', caption="Daily Sales Trend")
+            else:
+                st.info("Sales by Day chart not available.")
+                
+            if os.path.exists('sma_analysis.png'):
+                st.image('sma_analysis.png', caption="Moving Averages")
+            else:
+                st.info("SMA Analysis chart not available.")
             
         with tab3:
-            st.image('correlation_heatmap.png', caption="Feature Correlations", use_column_width=True)
+            if os.path.exists('correlation_heatmap.png'):
+                st.image('correlation_heatmap.png', caption="Feature Correlations")
+            else:
+                st.info("Correlation Heatmap not available.")
 
 else:
     st.warning("Project not initialized. Run the training script first.")

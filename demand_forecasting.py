@@ -14,6 +14,9 @@ from datetime import datetime, date
 import holidays
 import warnings
 warnings.filterwarnings('ignore')
+import matplotlib
+matplotlib.use('Agg') # Use non-interactive backend
+import matplotlib.pyplot as plt
 
 # ============================================================
 #                    DEMAND FORECASTING MODEL
@@ -131,7 +134,7 @@ for i, col in enumerate(features_to_plot):
     plt.ylabel('Average Sales')
 plt.tight_layout()
 plt.savefig('feature_analysis.png', dpi=150)
-plt.show()
+plt.close()
 print("  ✓ Saved: feature_analysis.png")
 
 plt.figure(figsize=(10, 5))
@@ -141,7 +144,7 @@ plt.xlabel('Day of Month')
 plt.ylabel('Average Sales')
 plt.grid(True, alpha=0.3)
 plt.savefig('sales_by_day.png', dpi=150)
-plt.show()
+plt.close()
 print("  ✓ Saved: sales_by_day.png")
 
 plt.figure(figsize=(15, 10))
@@ -159,7 +162,7 @@ if len(data) > 0:
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.savefig('sma_analysis.png', dpi=150)
-    plt.show()
+    plt.close()
     print("  ✓ Saved: sma_analysis.png")
 
 plt.subplots(figsize=(12, 5))
@@ -173,14 +176,14 @@ plt.title('Sales Boxplot (Outlier Detection)', fontsize=12, fontweight='bold')
 plt.xlabel('Sales')
 plt.tight_layout()
 plt.savefig('sales_distribution.png', dpi=150)
-plt.show()
+plt.close()
 print("  ✓ Saved: sales_distribution.png")
 
 plt.figure(figsize=(10, 10))
 sb.heatmap(df.corr(numeric_only=True) > 0.8, annot=True, cbar=False, cmap='RdYlGn')
 plt.title('Feature Correlation Matrix (>0.8 = Highly Correlated)', fontsize=14, fontweight='bold')
 plt.savefig('correlation_heatmap.png', dpi=150)
-plt.show()
+plt.close()
 print("  ✓ Saved: correlation_heatmap.png")
 
 original_count = len(df)
