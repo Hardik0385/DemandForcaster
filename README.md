@@ -100,6 +100,11 @@ This will create a `StoreDemand.csv` file with:
    python generate_data.py
    ```
 
+5. **Run the Application**
+   ```bash
+   streamlit run app.py
+   ```
+
 ## 💻 Usage & Workflow
 
 ### 1. Data Generation (Optional)
@@ -180,9 +185,6 @@ joblib
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- Based on concepts from [GeeksforGeeks - Inventory Demand Forecasting](https://www.geeksforgeeks.org/machine-learning/inventory-demand-forecasting-using-machine-learning-python/)
 
 ---
 
